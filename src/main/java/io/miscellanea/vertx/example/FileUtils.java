@@ -1,7 +1,5 @@
-package io.miscellanea.vetx.example;
+package io.miscellanea.vertx.example;
 
-import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,13 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface Utils {
-    Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+/**
+ * Helpful utility methods for manipulating files.
+ *
+ * @author Jason Hallford
+ */
+interface FileUtils {
+    Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
     static List<String> readTextFileFromClasspath(String resourcePath) {
         List<String> contents = new ArrayList<>();
 
-        try (var in = (BufferedInputStream) Utils.class.getClassLoader().getResourceAsStream(resourcePath)) {
+        try (var in = (BufferedInputStream) FileUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
             if (in == null) {
                 throw new IdpException("Unable to locate resource '" + resourcePath + "' on the classpath.");
             }

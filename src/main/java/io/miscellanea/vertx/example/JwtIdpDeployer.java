@@ -1,4 +1,4 @@
-package io.miscellanea.vetx.example;
+package io.miscellanea.vertx.example;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;

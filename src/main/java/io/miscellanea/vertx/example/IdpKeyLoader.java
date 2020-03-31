@@ -1,4 +1,4 @@
-package io.miscellanea.vetx.example;
+package io.miscellanea.vertx.example;
 
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
@@ -48,14 +48,14 @@ public class IdpKeyLoader {
         String pathToKey = null;
         switch (this.ofType) {
             case IdpPrivate:
-                if (keyConfig.containsKey("private")) {
+                if (keyConfig.containsKey("private") && keyConfig.getString("private") != null) {
                     pathToKey = keyConfig.getString("private");
                 } else {
                     throw new IdpException("Provided configuration does not contain a private key entry.");
                 }
                 break;
             case IdpPublic:
-                if (keyConfig.containsKey("public")) {
+                if (keyConfig.containsKey("public") && keyConfig.getString("public") != null) {
                     pathToKey = keyConfig.getString("public");
                 } else {
                     throw new IdpException("Provided configuration does not contain a public key entry.");
@@ -66,11 +66,11 @@ public class IdpKeyLoader {
         try {
             List<String> contents;
             if (pathToKey.startsWith("classpath:")) {
-                contents = Utils.readTextFileFromClasspath(pathToKey.substring("classpath:".length()));
+                contents = FileUtils.readTextFileFromClasspath(pathToKey.substring("classpath:".length()));
             } else {
                 contents = Files.readAllLines(Path.of(pathToKey));
             }
-            this.key = Utils.formatPemFileForVertx(contents);
+            this.key = FileUtils.formatPemFileForVertx(contents);
         } catch (IOException e) {
             throw new IdpException("Unable to read " + ofType + " key from file " + pathToKey + "!", e);
         }

@@ -1,6 +1,6 @@
-package io.miscellanea.vetx.example;
+package io.miscellanea.vertx.example;
 
-import io.miscellanea.vetx.example.IdpKeyLoader.KeyType;
+import io.miscellanea.vertx.example.IdpKeyLoader.KeyType;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Promise;
