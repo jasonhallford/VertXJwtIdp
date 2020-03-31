@@ -1,0 +1,13 @@
+{
+  "idp_bind_port": 8443,
+  "client-credentials": [
+    {
+      "client-id": "6fe630e9-7e07-4ceb-9887-41e195a07917",
+      "client-secret" : "a41a9717-3632-4c75-9806-5ccb6b66f8d6"
+    }
+  ],
+  "keys": {
+    "public" : "classpath:keys/idp-public.pem",
+    "private": "classpath:keys/idp-private.pem"
+  }
+}
