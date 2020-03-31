@@ -86,10 +86,6 @@ public class JwtIssuerVerticle extends AbstractVerticle {
         }
     }
 
-    private void createHttpServer(AsyncResult<Object> promise) {
-
-    }
-
     // Path handlers
     private void issueJwt(RoutingContext routingContext) {
 
