@@ -6,16 +6,16 @@ package io.miscellanea.vertx.example;
  * @author Jason Hallford
  */
 public enum ConfigProps {
-    IdpBindPort("idp_bind_port");
+  IdpBindPort("bind-port");
 
-    private final String name;
+  private final String name;
 
-    ConfigProps(String name) {
-        this.name = name;
-    }
+  ConfigProps(String name) {
+    this.name = name;
+  }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
+  @Override
+  public String toString() {
+    return this.name;
+  }
 }
