@@ -143,7 +143,20 @@ public class JwtIssuerVerticle extends AbstractVerticle {
 
     // Initialize TLS configuration
     this.keyStorePath = config().getString(ConfigProp.KEY_STORE);
+    if (this.keyStorePath == null) {
+      throw new IdpException(
+          "Required configuration element '"
+              + ConfigProp.KEY_STORE
+              + "' is missing; verticle will not deploy.");
+    }
+
     this.keyStorePassword = config().getString(ConfigProp.KEY_STORE_PASSWORD);
+    if (this.keyStorePassword == null) {
+      throw new IdpException(
+          "Required configuration element '"
+              + ConfigProp.KEY_STORE_PASSWORD
+              + "' is missing; verticle will not deploy.");
+    }
 
     // Initialize properties affecting claim issuance.
     var claimsConfig = config().getJsonObject(ConfigProp.CLAIMS_CONFIGURATION);

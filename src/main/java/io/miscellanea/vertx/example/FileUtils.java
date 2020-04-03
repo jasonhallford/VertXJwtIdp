@@ -3,7 +3,6 @@ package io.miscellanea.vertx.example;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -21,8 +20,7 @@ interface FileUtils {
   static List<String> readTextFileFromClasspath(String resourcePath) {
     List<String> contents = new ArrayList<>();
 
-    try (var in =
-        (BufferedInputStream) FileUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
+    try (var in = FileUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
       if (in == null) {
         throw new IdpException(
             "Unable to locate resource '" + resourcePath + "' on the classpath.");
