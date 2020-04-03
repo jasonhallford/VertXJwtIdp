@@ -19,7 +19,7 @@ public class IdpKeyLoaderTest {
     // Test initializers
     @BeforeAll
     public static void loadDefaultConfig() {
-        List<String> config = FileUtils.readTextFileFromClasspath("conf/idp-jwt-config.json");
+        List<String> config = FileUtils.readTextFileFromClasspath("conf/issuer-config.json");
         assertThat(config.size()).isGreaterThan(0);
 
         defaultConfig = (JsonObject) Json.decodeValue(String.join("\n", config));

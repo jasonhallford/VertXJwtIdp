@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * A class to load keys in PEM format.
+ * A class to load keys and certificates serialized in PEM format.
  *
  * @author Jason Hallford
  */
@@ -48,15 +48,17 @@ public class IdpKeyLoader {
     String pathToKey = null;
     switch (this.ofType) {
       case IdpPrivate:
-        if (keyConfig.containsKey("private") && keyConfig.getString("private") != null) {
-          pathToKey = keyConfig.getString("private");
+        if (keyConfig.containsKey(ConfigProp.PRIVATE_KEY)
+            && keyConfig.getString(ConfigProp.PRIVATE_KEY) != null) {
+          pathToKey = keyConfig.getString(ConfigProp.PRIVATE_KEY);
         } else {
           throw new IdpException("Provided configuration does not contain a private key entry.");
         }
         break;
       case IdpPublic:
-        if (keyConfig.containsKey("public") && keyConfig.getString("public") != null) {
-          pathToKey = keyConfig.getString("public");
+        if (keyConfig.containsKey(ConfigProp.PUBLIC_KEY)
+            && keyConfig.getString(ConfigProp.PUBLIC_KEY) != null) {
+          pathToKey = keyConfig.getString(ConfigProp.PUBLIC_KEY);
         } else {
           throw new IdpException("Provided configuration does not contain a public key entry.");
         }
@@ -82,9 +84,9 @@ public class IdpKeyLoader {
 
   // Private methods
   private JsonObject initializeKeyConfig() {
-    JsonObject keyConfig = config.getJsonObject("keys");
-    if (config.containsKey("idp-config-file")) {
-      var path = Path.of(config.getString("idp-config-file"));
+    JsonObject keyConfig = config.getJsonObject(ConfigProp.KEYS);
+    if (config.containsKey(ConfigProp.IDP_CONFIG_FILE)) {
+      var path = Path.of(config.getString(ConfigProp.IDP_CONFIG_FILE));
       LOGGER.debug("Reading key configuration from file at '{}'.", path.toString());
 
       keyConfig = this.readKeyConfigFromFile(path);

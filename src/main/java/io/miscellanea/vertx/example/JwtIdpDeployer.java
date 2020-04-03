@@ -9,6 +9,16 @@ import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The example's main class. It deploys two verticles:
+ * <ol>
+ *     <li>An issuer verticle, responsible for issuing JWTs</li>
+ *     <li>A authenticator verticle, responsible for authenticating client
+ *     token requests</li>
+ * </ol>
+ *
+ * @author Jason Hallford
+ */
 public class JwtIdpDeployer {
   // Fields
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtIdpDeployer.class);
@@ -27,7 +37,7 @@ public class JwtIdpDeployer {
         new ConfigStoreOptions()
             .setType("file")
             .setFormat("json")
-            .setConfig(new JsonObject().put("path", "conf/idp-jwt-config.json"));
+            .setConfig(new JsonObject().put("path", "conf/issuer-config.json"));
     var systemPropsStore = new ConfigStoreOptions().setType("sys");
     var envVarStore = new ConfigStoreOptions().setType("env");
 
@@ -41,12 +51,14 @@ public class JwtIdpDeployer {
     ConfigRetriever.create(vertx, configRetrieverOpts)
         .getConfig(
             config -> {
+              var json = config.result();
+
               // Deploy the credential manager
-              var credOpts = new DeploymentOptions().setConfig(config.result());
-              vertx.deployVerticle(CredentialManagerVerticle.class.getName(), credOpts);
+              var credOpts = new DeploymentOptions().setConfig(json);
+              vertx.deployVerticle(AuthenticatorVerticle.class.getName(), credOpts);
 
               // Deploy the REST API
-              var apiOpts = new DeploymentOptions().setConfig(config.result());
+              var apiOpts = new DeploymentOptions().setConfig(json);
               vertx.deployVerticle(JwtIssuerVerticle.class.getName(), apiOpts);
             });
   }

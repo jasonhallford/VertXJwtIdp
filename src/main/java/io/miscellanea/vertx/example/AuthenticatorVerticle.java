@@ -10,8 +10,13 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CredentialManagerVerticle extends AbstractVerticle {
-  // Private inner class to hold individual client configuration.
+/**
+ * A Vert.x verticle that manages principal authentication.
+ *
+ * @author Jason Hallford
+ */
+public class AuthenticatorVerticle extends AbstractVerticle {
+  /** A value object to store a client's secret and associated roles. */
   private class ClientConfig {
     // Fields
     private String secret;
@@ -34,7 +39,7 @@ public class CredentialManagerVerticle extends AbstractVerticle {
   }
 
   // Fields
-  private static final Logger LOGGER = LoggerFactory.getLogger(CredentialManagerVerticle.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatorVerticle.class);
   private static final String CLIENT_SECRET = "secret";
   private static final String CLIENT_ID = "id";
   private static final String CLIENT_ROLES = "roles";
@@ -42,7 +47,9 @@ public class CredentialManagerVerticle extends AbstractVerticle {
   private Map<String, ClientConfig> idToClient = new HashMap<>();
 
   // Constructors
-  public CredentialManagerVerticle() {}
+
+  /** Default constructor. */
+  public AuthenticatorVerticle() {}
 
   // Vert.x life-cycle management
   @Override
@@ -64,22 +71,29 @@ public class CredentialManagerVerticle extends AbstractVerticle {
   }
 
   // Handler methods
+
+  /**
+   * Authenticate the client using information provided in <code>message</code>.
+   *
+   * @param message The message received from the Vert.x event bus
+   */
   private void authenticateClient(Message<JsonObject> message) {
     var payload = message.body();
 
-    var clientId = payload.getString("client-id");
-    var clientSecret = payload.getString("client-secret");
+    var clientId = payload.getString(MessageField.CLIENT_ID);
+    var clientSecret = payload.getString(MessageField.CLIENT_SECRET);
 
     LOGGER.debug("Authenticating client {}.", clientId);
 
-    var authnResult = new JsonObject().put("subject", clientId).put("authn", false);
+    var authnResult =
+        new JsonObject().put(MessageField.SUBJECT, clientId).put(MessageField.AUTHN, false);
 
     var config = this.idToClient.get(clientId);
     if (config != null) {
       if (clientSecret.equals(config.getSecret())) {
         LOGGER.debug("Successfully authenticated client {}.", clientId);
-        authnResult.put("roles", config.getRoles());
-        authnResult.put("authn", true);
+        authnResult.put(MessageField.ROLES, config.getRoles());
+        authnResult.put(MessageField.AUTHN, true);
       } else {
         LOGGER.warn(
             "Client {} attempted to authenticate with invalid credentials; request denied.",
@@ -96,7 +110,7 @@ public class CredentialManagerVerticle extends AbstractVerticle {
   private void registerClients() {
     LOGGER.debug("Registering clients...");
     var config = config();
-    var clients = config().getJsonArray("client-config");
+    var clients = config().getJsonArray(ConfigProp.CLIENT_CONFIG);
     if (clients != null) {
       for (int idx = 0; idx < clients.size(); idx++) {
         var client = clients.getJsonObject(idx);
