@@ -235,7 +235,7 @@ public class JwtIssuerVerticle extends AbstractVerticle {
     claims.put("iat", DateTimeFormatter.ISO_INSTANT.format(now));
     claims.put("nbf", DateTimeFormatter.ISO_INSTANT.format(now));
     claims.put("jti", UUID.randomUUID().toString());
-    claims.put("exp", DateTimeFormatter.ISO_INSTANT.format(now.plusSeconds(this.epiresIn)));
+    claims.put("exp", this.epiresIn);
 
     return claims;
   }

@@ -6,7 +6,7 @@
 
     <groupId>io.miscellanea.vertx.example</groupId>
     <artifactId>vertx-jwt-idp</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 
     <properties>
         <vertx.version>3.8.5</vertx.version>
