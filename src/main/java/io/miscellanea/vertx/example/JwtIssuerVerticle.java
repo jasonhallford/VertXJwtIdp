@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class JwtIssuerVerticle extends AbstractVerticle {
@@ -232,10 +231,12 @@ public class JwtIssuerVerticle extends AbstractVerticle {
 
     // Generate the time--in UTC--for all date/time based claims.
     var now = ZonedDateTime.now(ZoneId.of(this.issuerTimeZone));
-    claims.put("iat", DateTimeFormatter.ISO_INSTANT.format(now));
-    claims.put("nbf", DateTimeFormatter.ISO_INSTANT.format(now));
+    claims.put("iat", now.toEpochSecond() / 1000); // Adjust ms to seconds
+    claims.put("nbf", now.toEpochSecond() / 1000); // Adjust ms to seconds
     claims.put("jti", UUID.randomUUID().toString());
-    claims.put("exp", this.epiresIn);
+    claims.put(
+        "exp",
+        now.plusSeconds(this.epiresIn).toInstant().toEpochMilli() / 1000); // Adjust ms to seconds
 
     return claims;
   }
