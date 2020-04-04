@@ -10,8 +10,8 @@ RUN mvn package
 # directory and write it into a JRE image.
 FROM adoptopenjdk:11.0.6_10-jre-hotspot
 WORKDIR /opt/app
-COPY --from=builder /opt/app/src/target/vertx-jwt-idp-1.2-fat.jar .
+COPY --from=builder /opt/app/src/target/vertx-jwt-idp-1.3-fat.jar .
 
 # Expose port TCP/8080 and set the command
 EXPOSE 8443
-CMD ["java","-jar","./vertx-jwt-idp-1.2-fat.jar"]
+CMD ["java","-jar","./vertx-jwt-idp-1.3-fat.jar"]
