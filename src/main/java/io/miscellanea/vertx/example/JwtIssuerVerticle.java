@@ -238,6 +238,11 @@ public class JwtIssuerVerticle extends AbstractVerticle {
         "exp",
         now.plusSeconds(this.epiresIn).toInstant().toEpochMilli() / 1000); // Adjust ms to seconds
 
+    // Does the user have any roles? If so, add as a custom claim.
+    if(authnResult.containsKey(MessageField.ROLES)){
+      claims.put("rol",authnResult.getJsonArray(MessageField.ROLES));
+    }
+
     return claims;
   }
 }
