@@ -15,7 +15,7 @@ nicely)
 ## Building the Project
 You may build the example in one of two ways, as a JAR or a Docker image. 
 ### Maven Build
-You may build JAR from source using [Apache Maven](http://maven.apache.org). Assuming a version >= 3.6.0 you can build it  by
+You may build JAR from source using [Apache Maven](http://maven.apache.org). Assuming a version >= 3.5.0 you can build it  by
 executing `mvn package` at the command line (assuming `mvn` is in the path, of course). In the project's /target
 directory, this will produce
 * A JAR file named __vertx-jwt-idp-1.3.jar__, which contains just the project's classes
@@ -23,11 +23,11 @@ directory, this will produce
 at your favorite command line
 ### Building as a Docker Image
 You may use the included Dockerfile to create a deployable image. From the source directory, run the following
-command to build the image: `docker build -t vertxjpa:1.1 .`. Here, the resulting image will have the tag
-__vertxjwt:1.3__. 
+command to build the image: `docker build -t vertxjwtidp:1.3 .`. Here, the resulting image will have the tag
+__vertxjwtidp:1.3__. 
 
-Run the container with the following command: `docker run --rm -p 8080:8080 --name vertxjpa vertxjpa:1.0`. You will 
-be able to connect to the app at http://localhost:8080.
+Run the container with the following command: `docker run --rm -p 8080:8080 --name vertxjwtidp vertxjwtidp:1.3`. You will 
+be able to connect to the app at https://localhost:8443.
 
 ## Configuring the Example
 The example includes a default configuration that creates an API verticle bound to port TCP/8443
